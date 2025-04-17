@@ -219,8 +219,8 @@ def batch_process_pdfs(pdf_folder, output_excel):
 
         # 调整列顺序
         columns_order = [
-            "Source File", "Invoice #", "month", "Date", "Description",
-            "Location", "Fees", "GST/HST", "QST", "PST", "Total",
+            "Source File", "Date", "month", "Description",
+            "Location", "Fees", "GST/HST", "QST", "PST", "Total", "Invoice #", 
             "Supplier", "Credit note?", "Currency"
         ]
         df = df[columns_order]
@@ -244,8 +244,8 @@ def batch_process_pdfs(pdf_folder, output_excel):
 
 if __name__ == "__main__":
     # 配置路径
-    pdf_folder = r"C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Non-Amazon CA"
-    output_excel = "C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Non-Amazon CA\\Non-Amazon_CA.xlsx"
+    pdf_folder = r"C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Amazon.ca\\FBA Fulfilment CA"
+    output_excel = "C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Amazon.ca\\FBA_Fulfilment_CA.xlsx"
     
     # 执行处理
     batch_process_pdfs(pdf_folder, output_excel)
