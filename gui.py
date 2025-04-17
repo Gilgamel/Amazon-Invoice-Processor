@@ -38,12 +38,12 @@ class InvoiceProcessorApp:
 
         # 国家选择
         ttk.Label(self.master, text="Country:").grid(row=2, column=0, padx=5, pady=5, sticky='e')
-        self.country = ttk.Combobox(self.master, values=['USA', 'Canada', 'Mexico'], state='readonly')
+        self.country = ttk.Combobox(self.master, values=['USA', 'Canada', 'Mexico'], state='readonly', width=25)
         self.country.grid(row=2, column=1, padx=5, pady=5, sticky='w')
 
         # 类型选择
         ttk.Label(self.master, text="Invoice Type:").grid(row=3, column=0, padx=5, pady=5, sticky='e')
-        self.invoice_type = ttk.Combobox(self.master, values=['Advertising', 'Seller Fees', 'FBA Fulfillment', 'FBA Fulfillment Non-Amazon'], state='readonly')
+        self.invoice_type = ttk.Combobox(self.master, values=['Advertising', 'Seller Fees', 'FBA Fulfillment', 'FBA Fulfillment Non-Amazon'], state='readonly', width=25)
         self.invoice_type.grid(row=3, column=1, padx=5, pady=5, sticky='w')
 
         # 运行按钮
