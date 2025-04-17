@@ -250,18 +250,37 @@ def batch_process_pdfs(pdf_folder, output_excel):
     else:
         print("\n警告：未提取到有效数据")
 
-if __name__ == "__main__":
-    # 配置路径
-    pdf_folder = r"C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Amazon.com"
-    output_excel = "C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Amazon.com\\Seller_Fees_US.xlsx"
 
+def main():
+    parser = argparse.ArgumentParser(description='Process USA Seller Fees invoices')
+    parser.add_argument('--input', required=True, help='PDF folder path')
+    parser.add_argument('--output', required=True, help='Output Excel path')
+    args = parser.parse_args()
 
-    
-    # 执行处理
-    batch_process_pdfs(pdf_folder, output_excel)
-    
-    # 自动打开结果文件（仅Windows）
+    # 输入验证
+    if not os.path.exists(args.input):
+        print(f"Error: Input folder not found - {args.input}")
+        return 1
+
     try:
-        os.startfile(output_excel)
-    except:
-        print(f"请手动打开结果文件: {output_excel}")
+        batch_process_pdfs(
+            pdf_folder=args.input,
+            output_excel=args.output
+        )
+        return 0
+    except Exception as e:
+        print(f"Critical error: {str(e)}")
+        return 2
+
+if __name__ == "__main__":
+
+    # 移除硬编码路径
+    exit_code = main()
+    
+    # 注释自动打开功能（可选）
+    # try:
+    #     os.startfile(output_excel)
+    # except:
+    #     pass
+    
+    exit(exit_code)

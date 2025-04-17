@@ -12,8 +12,12 @@ class InvoiceProcessorApp:
 
         # Script configuration
         self.script_mapping = {
-            ('USA', 'Type1'): 'script_usa_type1.py',
-            ('Canada', 'Type2'): 'script_canada_type2.py',
+            ('USA', 'Advertising'): 'script_us_ads.py',
+            ('Canada', 'Advertising'): 'script_ca_ads.py',
+            ('Mexico', 'Advertising'): 'script_mx_ads.py',
+            ('USA', 'Seller Fees'): 'script_us_seller_fees.py',
+            ('Canada', 'Seller Fees'): 'script_ca_seller_fees.py',
+            ('Mexico', 'Seller Fees'): 'script_mx_seller_fees.py',
             # Add other mappings...
         }
 
