@@ -3,12 +3,6 @@ import re
 import pdfplumber
 import pandas as pd
 from datetime import datetime
-import argparse
-import warnings
-
-
-warnings.filterwarnings("ignore", category=UserWarning, message="CropBox missing")
-
 
 def extract_invoice_info(text):
     """
@@ -125,16 +119,16 @@ def extract_last_table_data(pdf_path):
                             entry = {
                                 "Invoice #": invoice_number,
                                 "Date": invoice_date,
-                                "Description": "Seller Fees/Frais de Vendeur",
+                                "Description": "Fulfillment by Amazon Fees",
                                 "Location": safe_get(row, col_indices["location"]),
                                 "Fees": clean_number(safe_get(row, col_indices["fees"])),
                                 "GST/HST": clean_number(safe_get(row, col_indices["gst/hst"])),
                                 "QST": clean_number(safe_get(row, col_indices["qst"])) if col_indices["qst"] != -1 else 0.0,
                                 "PST": safe_get(row, col_indices["pst"]),
                                 "Total": clean_number(safe_get(row, col_indices["total"])),
-                                "Supplier": "Amazon.com Services LLC",
+                                "Supplier": "Amazon.com.ca, Inc.",
                                 "Credit note?": "",
-                                "Currency": "USD"
+                                "Currency": "CAD"
                             }
                             collected_data.append(entry)
             
@@ -145,17 +139,9 @@ def extract_last_table_data(pdf_path):
     return None
 
 def clean_number(val):
-    """增强版数值清洗转换（支持括号负数和多种格式）"""
+    """数值清洗转换"""
     try:
-        # 预处理：移除所有空格、$符号和逗号
-        cleaned = re.sub(r'[$\s,]', '', str(val))
-        
-        # 处理括号负数（支持格式如 ($203.10) 或 (1,234.56)）
-        if re.match(r'^\(.*\)$', cleaned):
-            cleaned = '-' + cleaned[1:-1]
-            
-        # 转换为浮点数
-        return float(cleaned)
+        return float(str(val).replace("$", "").replace(",", "").strip())
     except:
         return 0.0
 
@@ -256,37 +242,16 @@ def batch_process_pdfs(pdf_folder, output_excel):
     else:
         print("\n警告：未提取到有效数据")
 
-
-def main():
-    parser = argparse.ArgumentParser(description='Process USA Seller Fees invoices')
-    parser.add_argument('--input', required=True, help='PDF folder path')
-    parser.add_argument('--output', required=True, help='Output Excel path')
-    args = parser.parse_args()
-
-    # 输入验证
-    if not os.path.exists(args.input):
-        print(f"Error: Input folder not found - {args.input}")
-        return 1
-
-    try:
-        batch_process_pdfs(
-            pdf_folder=args.input,
-            output_excel=args.output
-        )
-        return 0
-    except Exception as e:
-        print(f"Critical error: {str(e)}")
-        return 2
-
 if __name__ == "__main__":
-
-    # 移除硬编码路径
-    exit_code = main()
+    # 配置路径
+    pdf_folder = r"C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Amazon.ca\\FBA Fulfilment CA"
+    output_excel = "C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Amazon.ca\\FBA_Fulfilment_CA.xlsx"
     
-    # 注释自动打开功能（可选）
-    # try:
-    #     os.startfile(output_excel)
-    # except:
-    #     pass
+    # 执行处理
+    batch_process_pdfs(pdf_folder, output_excel)
     
-    exit(exit_code)
+    # 自动打开结果文件（仅Windows）
+    try:
+        os.startfile(output_excel)
+    except:
+        print(f"请手动打开结果文件: {output_excel}")

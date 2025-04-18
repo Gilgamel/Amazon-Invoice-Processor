@@ -116,9 +116,33 @@ class InvoiceProcessorApp:
         if not self.validate_inputs():
             return
 
-        script_name = self.script_mapping.get((self.country.get(), self.invoice_type.get()))
-        if not script_name or not os.path.exists(script_name):
-            messagebox.showerror("Error", f"Script not found: {script_name}")
+    # 获取国家/类型组合
+        country = self.country.get()
+        invoice_type = self.invoice_type.get()
+        script_name = self.script_mapping.get((country, invoice_type))
+
+    # 检查是否配置了该组合
+        if not script_name:
+            messagebox.showerror("Error", 
+                f"No script configured for:\nCountry: {country}\nType: {invoice_type}")
+            return
+
+    # ========== 新增代码开始 ==========
+    # 构建完整脚本路径
+        script_dir = os.path.join(os.path.dirname(__file__), "for_gui")  # 关键修复点
+        script_path = os.path.join(script_dir, script_name)
+        script_path = os.path.normpath(os.path.abspath(script_path))  # 标准化路径
+
+        print(f"[DEBUG] Looking for script at: {script_path}")  # 调试信息
+    # ========== 新增代码结束 ==========
+
+        if not os.path.exists(script_path):
+            messagebox.showerror("Error", 
+                f"Script not found at:\n{script_path}\n"
+                f"请确认：\n"
+                f"1. 存在 for_gui 子目录\n"
+                f"2. 文件 {script_name} 在子目录中\n"
+                f"3. 文件名大小写完全一致")
             return
 
         output_path = self.output_file.get()
@@ -126,11 +150,12 @@ class InvoiceProcessorApp:
             os.makedirs(os.path.dirname(output_path), exist_ok=True)
             cmd = [
                 'python',
-                script_name,
+                script_path,  # 使用修正后的路径
                 '--input', self.input_dir.get(),
-                '--output', output_path
+                '--output',
+                output_path
             ]
-            
+        
             self.status_label.config(text="Processing...", foreground="blue")
             self.master.update()
 
@@ -141,15 +166,16 @@ class InvoiceProcessorApp:
                 text=True
             )
 
+            
             if result.returncode == 0:
                 messagebox.showinfo("Success", f"File generated:\n{output_path}")
                 self.status_label.config(text="Completed", foreground="green")
             else:
-                messagebox.showerror("Error", f"Script execution failed:\n{result.stderr}")
+                messagebox.showerror("Error", f"Script execution failed:\n{result.stderr[:500]}")  # 截断长错误信息
                 self.status_label.config(text="Execution Error", foreground="red")
 
         except subprocess.CalledProcessError as e:
-            messagebox.showerror("Error", f"Processing failed: {e.stderr}")
+            messagebox.showerror("Error", f"Processing failed: {e.stderr[:500]}")
             self.status_label.config(text="Process Error", foreground="red")
         except Exception as e:
             messagebox.showerror("Error", f"System error: {str(e)}")
