@@ -3,6 +3,11 @@ import re
 import pdfplumber
 import pandas as pd
 from datetime import datetime
+import argparse
+import warnings
+
+
+
 
 def extract_invoice_info(text):
     """
@@ -250,10 +255,11 @@ def batch_process_pdfs(pdf_folder, output_excel):
     else:
         print("\n警告：未提取到有效数据")
 
+
 if __name__ == "__main__":
     # 配置路径
-    pdf_folder = r"C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Amazon.com.mx"
-    output_excel = "C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Amazon.com.mx\\Seller_Fees_MX.xlsx"
+    pdf_folder = r"C:\\Users\\Gilgamel\\Desktop\\StoreV-2021\\Amazon.com"
+    output_excel = "C:\\Users\\Gilgamel\\Desktop\\StoreV-2021\\Amazon.com\\Seller_Fees_US.xlsx"
 
 
     

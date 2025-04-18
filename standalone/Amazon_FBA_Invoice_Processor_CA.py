@@ -3,6 +3,11 @@ import re
 import pdfplumber
 import pandas as pd
 from datetime import datetime
+import argparse
+import warnings
+
+
+
 
 def extract_invoice_info(text):
     """
@@ -139,9 +144,17 @@ def extract_last_table_data(pdf_path):
     return None
 
 def clean_number(val):
-    """数值清洗转换"""
+    """增强版数值清洗转换（支持括号负数和多种格式）"""
     try:
-        return float(str(val).replace("$", "").replace(",", "").strip())
+        # 预处理：移除所有空格、$符号和逗号
+        cleaned = re.sub(r'[$\s,]', '', str(val))
+        
+        # 处理括号负数（支持格式如 ($203.10) 或 (1,234.56)）
+        if re.match(r'^\(.*\)$', cleaned):
+            cleaned = '-' + cleaned[1:-1]
+            
+        # 转换为浮点数
+        return float(cleaned)
     except:
         return 0.0
 
@@ -242,10 +255,13 @@ def batch_process_pdfs(pdf_folder, output_excel):
     else:
         print("\n警告：未提取到有效数据")
 
+
 if __name__ == "__main__":
     # 配置路径
-    pdf_folder = r"C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Amazon.ca\\FBA Fulfilment CA"
-    output_excel = "C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Amazon.ca\\FBA_Fulfilment_CA.xlsx"
+    pdf_folder = r"C:\\Users\\Gilgamel\\Desktop\\StoreV-2021\\Amazon.com"
+    output_excel = "C:\\Users\\Gilgamel\\Desktop\\StoreV-2021\\Amazon.com\\Seller_Fees_US.xlsx"
+
+
     
     # 执行处理
     batch_process_pdfs(pdf_folder, output_excel)
