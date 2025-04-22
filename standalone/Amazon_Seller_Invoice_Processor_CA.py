@@ -94,19 +94,19 @@ def extract_last_table_data(pdf_path):
                                     if any(kw in cell for kw in ["province", "location", "region", ""])), -1),
                                 "fees": next(
                                     (i for i, cell in enumerate(header) 
-                                    if any(kw in cell for kw in ["fees", "amount"])), -1),
+                                    if any(kw in cell for kw in ["fees"])), -1),
                                 "gst/hst": next(
                                     (i for i, cell in enumerate(header) 
-                                    if any(kw in cell for kw in ["gst/hst", "gst", "hst", "tax"])), -1),
+                                    if any(kw in cell for kw in ["gst/hst", "gst", "hst"])), -1),
                                 "qst": next(
                                     (i for i, cell in enumerate(header) 
                                     if "qst" in cell), -1),
                                 "pst": next(
                                     (i for i, cell in enumerate(header) 
-                                    if any(kw in cell for kw in ["pst", "provincial sales tax"])), -1),
+                                    if any(kw in cell for kw in ["pst"])), -1),
                                 "total": next(
                                     (i for i, cell in enumerate(header) 
-                                    if any(kw in cell for kw in ["total", "amount due"])), -1)
+                                    if any(kw in cell for kw in ["total"])), -1)
                             }
                         }
 
@@ -258,8 +258,8 @@ def batch_process_pdfs(pdf_folder, output_excel):
 
 if __name__ == "__main__":
     # 配置路径
-    pdf_folder = r"C:\\Users\\Gilgamel\\Desktop\\StoreV-2021\\Amazon.com"
-    output_excel = "C:\\Users\\Gilgamel\\Desktop\\StoreV-2021\\Amazon.com\\Seller_Fees_US.xlsx"
+    pdf_folder = r"C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Amazon.ca\\Seller Fees CA"
+    output_excel = "C:\\Users\\vuser\\My Drive\\Documents\\ad-hoc\\20250416 store-v\\StoreV-2021\\Seller_Fees_CA_V2.xlsx"
 
 
     
