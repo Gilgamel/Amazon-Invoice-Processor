@@ -94,19 +94,19 @@ def extract_last_table_data(pdf_path):
                                     if any(kw in cell for kw in ["province", "location", "region", ""])), -1),
                                 "fees": next(
                                     (i for i, cell in enumerate(header) 
-                                    if any(kw in cell for kw in ["fees", "amount"])), -1),
+                                    if any(kw in cell for kw in ["fees"])), -1),
                                 "gst/hst": next(
                                     (i for i, cell in enumerate(header) 
-                                    if any(kw in cell for kw in ["gst/hst", "gst", "hst", "tax"])), -1),
+                                    if any(kw in cell for kw in ["gst/hst", "gst", "hst"])), -1),
                                 "qst": next(
                                     (i for i, cell in enumerate(header) 
                                     if "qst" in cell), -1),
                                 "pst": next(
                                     (i for i, cell in enumerate(header) 
-                                    if any(kw in cell for kw in ["pst", "provincial sales tax"])), -1),
+                                    if any(kw in cell for kw in ["pst"])), -1),
                                 "total": next(
                                     (i for i, cell in enumerate(header) 
-                                    if any(kw in cell for kw in ["total", "amount due"])), -1)
+                                    if any(kw in cell for kw in ["total"])), -1)
                             }
                         }
 
