@@ -12,7 +12,7 @@ class InvoiceProcessorApp:
 
         # Script configuration
         self.script_mapping = {
-            ('USA', 'Advertising'): 'script_us_ads.py',
+            ('USA', 'Seller Fees'): os.path.join("for_gui", "script_us_seller_fees.py"),
             ('Canada', 'Advertising'): 'script_ca_ads.py',
             ('Mexico', 'Advertising'): 'script_mx_ads.py',
             ('USA', 'Seller Fees'): 'script_us_seller_fees.py',
